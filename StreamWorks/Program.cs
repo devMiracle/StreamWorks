@@ -42,7 +42,14 @@ namespace StreamWorks
             //Console.ReadKey(true);
 
             CustomWrite write = new CustomWrite("test.txt");
-            write.Write(new string[] { "привет", "мир" });
+            string input;
+            bool key = false;
+            do
+            {
+                Console.Write("Code: ");
+                input = Console.ReadLine();
+                write.Write(new string[] { input });
+            } while (!key);
 
         }
     }

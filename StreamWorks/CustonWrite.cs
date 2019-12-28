@@ -16,7 +16,7 @@ namespace StreamWorks
         }
         public void Write(string[] text)
         {
-            using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
+            using (FileStream fs = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None))
             {
                 byte[] b;
                 for (int i = 0; i < text.Length; i++)

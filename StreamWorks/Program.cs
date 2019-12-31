@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
+using System.Threading;
 
 namespace StreamWorks
 {
     class Program
     {
+        private static bool whileKey = false;
         static void Main(string[] args)
         {
             //FileInfo fileInfo2 = new FileInfo("test.txt");
@@ -43,14 +45,29 @@ namespace StreamWorks
 
             CustomWrite write = new CustomWrite("test.txt");
             string input;
-            bool key = false;
+            
+
+            Thread thread2 = new Thread(new ThreadStart(IsPushEscape));
+            thread2.Start();
             do
             {
                 Console.Write("Code: ");
                 input = Console.ReadLine();
                 write.Write(new string[] { input });
-            } while (!key);
-
+            } while (!whileKey);
         }
+
+        private static void IsPushEscape()
+        {
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey();
+                whileKey = key.Key == ConsoleKey.Escape ? true : false;
+            } while (true);
+        }
+
+
+
     }
 }

@@ -43,17 +43,17 @@ namespace StreamWorks
             ////File.Delete(path);
             //Console.ReadKey(true);
 
-            CustomWrite write = new CustomWrite("test.txt");
+            CustomReadWrite write = new CustomReadWrite("test.txt");
             string input;
             
 
-            Thread thread2 = new Thread(new ThreadStart(IsPushEscape));
-            thread2.Start();
+            //Thread thread2 = new Thread(new ThreadStart(IsPushEscape));
+            //thread2.Start();
             do
             {
                 Console.Write("Code: ");
                 input = Console.ReadLine();
-                write.Write(new string[] { input });
+                write.WriteBin(input);
             } while (!whileKey);
         }
 

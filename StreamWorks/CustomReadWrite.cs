@@ -14,7 +14,7 @@ namespace StreamWorks
         {
             Path = path;
         }
-        public string[] ReadFile()
+        public string ReadFile()
         {
             string text;
             using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read, FileShare.None))
@@ -23,38 +23,38 @@ namespace StreamWorks
                 fs.Read(b, 0, (int)fs.Length);
                 text = Encoding.UTF8.GetString(b);
             }
-            return new string[1] { text };
+            return text;
         }
         public void WriteFile(string text)
         {
             using (FileStream fs = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None))
             {
-                byte[] b;
-                for (int i = 0; i < text.Length; i++)
+                byte[] b = Encoding.UTF8.GetBytes(text);
+                fs.Write(b, 0, b.Length);
+            }
+        }
+        public string ReadBin()
+        {
+            string text;
+            List<string> textArray = new List<string>();
+            using (BinaryReader br = new BinaryReader(File.Open(Path, FileMode.Open)))
+            {
+                while (br.PeekChar() > -1)
                 {
-                    b = Encoding.UTF8.GetBytes(text[i] + "\n");
-                    fs.Write(b, 0, b.Length);
+                    text = br.ReadString();
+                    textArray.Add(text);
                 }
             }
+            text = String.Concat(textArray);
+            return text;
         }
         public void WriteBin(string text)
         {
-            if (Path.Skip(Path.IndexOf('.')).ToString() == ".txt")
+            using (BinaryWriter bw = new BinaryWriter(File.Open(Path, FileMode.Append, FileAccess.Write, FileShare.None)))
             {
-                Console.WriteLine("путь имеет расширение .txt");
-                Console.ReadKey(true);
+                bw.Write(text + "\n");
             }
-            using (FileStream str = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None))
-            {
-                byte[] b = Encoding.UTF8.GetBytes(text);
-                using (BinaryWriter bw = new BinaryWriter(str))
-                {
-                    bw.Write(b);
-                    Console.WriteLine("done!");
-                    Console.WriteLine("doneTwo!");
-                }
-            }
-
         }
+
     }
 }
